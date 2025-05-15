@@ -27,7 +27,7 @@ public class SodaItem extends Item {
     };
 
     public SodaItem(Settings settings) {
-        super(settings.maxCount(1).food(new FoodComponent.Builder().nutrition(1).saturationModifier(0.1F).alwaysEdible().build()));
+        super(settings.maxCount(1).maxDamage(20).food(new FoodComponent.Builder().nutrition(1).saturationModifier(0.1F).alwaysEdible().build()));
     }
 
     @Override

@@ -34,7 +34,7 @@ public class PopcornItem extends Item {
 
     public PopcornItem(Settings settings) {
         super(settings
-                .maxCount(1)
+                .maxCount(1).maxDamage(20)
                 .food(new FoodComponent.Builder()
                         .nutrition(1)
                         .saturationModifier(0.1F)
