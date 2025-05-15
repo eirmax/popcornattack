@@ -1,0 +1,62 @@
+{
+  "soda_one": {
+    "subtitle": "sounds.popcornattack.soda_one",
+    "sounds": [
+      "popcornattack:soda_one"
+    ]
+  },
+  "soda_two": {
+    "subtitle": "sounds.popcornattack.soda_two",
+    "sounds": [
+      "popcornattack:soda_two"
+    ]
+  },
+  "soda_three": {
+    "subtitle": "sounds.popcornattack.soda_three",
+    "sounds": [
+      "popcornattack:soda_three"
+    ]
+  },
+  "soda_four": {
+    "subtitle": "sounds.popcornattack.soda_four",
+    "sounds": [
+      "popcornattack:soda_four"
+    ]
+  },
+  "soda_five": {
+    "subtitle": "sounds.popcornattack.soda_five",
+    "sounds": [
+      "popcornattack:soda_five"
+    ]
+  },
+  "popcorn_one": {
+    "subtitle": "sounds.popcornattack.popcorn_one",
+    "sounds": [
+      "popcornattack:popcorn_one"
+    ]
+  },
+  "popcorn_two": {
+    "subtitle": "sounds.popcornattack.popcorn_two",
+    "sounds": [
+      "popcornattack:popcorn_two"
+    ]
+  },
+  "popcorn_three": {
+    "subtitle": "sounds.popcornattack.popcorn_three",
+    "sounds": [
+      "popcornattack:popcorn_three"
+    ]
+  },
+  "popcorn_four": {
+    "subtitle": "sounds.popcornattack.popcorn_four",
+    "sounds": [
+      "popcornattack:popcorn_four"
+    ]
+  },
+  "popcorn_five": {
+    "subtitle": "sounds.popcornattack.popcorn_five",
+    "sounds": [
+      "popcornattack:popcorn_five"
+    ]
+  }
+}
