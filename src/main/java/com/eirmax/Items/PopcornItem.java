@@ -84,7 +84,7 @@ public class PopcornItem extends Item {
                         eaterPos.x, eaterPos.y, eaterPos.z,
                         sound,
                         SoundCategory.PLAYERS,
-                        volume, // например, 0.4f или 1.0f
+                        volume,
                         1.0f
                 );
             }
