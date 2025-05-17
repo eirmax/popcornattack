@@ -4,6 +4,7 @@ import com.eirmax.registry.PopcornProjectile;
 import com.eirmax.sounds.ModSounds;
 import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -70,6 +71,7 @@ public class PopcornItem extends Item {
 
                 world.playSoundFromEntity(player, player, sound, SoundCategory.AMBIENT, 5.0F, 1.0F);
             }
+
             if (world.isClient) {
                 for (int i = 0; i < 10; i++) {
                     double dx = user.getX() + (RANDOM.nextDouble() - 0.5) * 0.5;
@@ -79,6 +81,7 @@ public class PopcornItem extends Item {
                 }
             }
             player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
+            stack.damage(1, player, EquipmentSlot.MAINHAND);
         }
         return stack;
     }

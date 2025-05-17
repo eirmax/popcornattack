@@ -2,6 +2,7 @@ package com.eirmax.Items;
 
 import com.eirmax.sounds.ModSounds;
 import net.minecraft.component.type.FoodComponent;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -75,6 +76,7 @@ public class SodaItem extends Item {
             }
 
             player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
+            stack.damage(1, player, EquipmentSlot.MAINHAND);
         }
         return stack;
     }
