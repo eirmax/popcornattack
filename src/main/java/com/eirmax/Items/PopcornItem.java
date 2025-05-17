@@ -45,12 +45,10 @@ public class PopcornItem extends Item {
                 return stack;
             }
             SoundEvent sound = EAT_SOUNDS[RANDOM.nextInt(EAT_SOUNDS.length)];
-            // --- На сервере: проиграть звук в мире (будет затухание по расстоянию) ---
             if (!world.isClient) {
                 player.getHungerManager().add(1, 0.1F);
                 playEatSoundInWorld(world, player.getPos(), sound);
             }
-            // --- На клиенте: поедающий игрок слышит звук локально (гарантированно, независимо от сервера) ---
             if (world.isClient) {
                 player.playSound(sound, 1.0f, 1.0f);
                 for (int i = 0; i < 10; i++) {
@@ -77,8 +75,6 @@ public class PopcornItem extends Item {
                 // Линейное затухание: 1.0f рядом, 0.0f на границе радиуса
                 float volume = (float) (Math.max(0.0, 1.0 - (distance / radius)) * 0.15);
                 System.out.println("Volume: " + volume);
-
-
                 serverWorld.playSound(
                         null,
                         eaterPos.x, eaterPos.y, eaterPos.z,
