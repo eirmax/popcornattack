@@ -50,7 +50,7 @@ public class PopcornItem extends Item {
         if (!world.isClient) {
             PopcornProjectile popcornProjectile = new PopcornProjectile(EntityType.ARROW, world);
             world.spawnEntity(popcornProjectile);
-            world.playSound(null, player.getX(), player.getY(), player.getZ(), THROW_SOUND, SoundCategory.PLAYERS, 1.0F, 1.0F);
+            world.playSound(null, player.getX(), player.getY(), player.getZ(), THROW_SOUND, SoundCategory.PLAYERS, 5.0F, 1.0F);
         }
         player.setCurrentHand(hand);
         player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
@@ -68,7 +68,7 @@ public class PopcornItem extends Item {
                 player.getHungerManager().add(1, 0.1F);
                 SoundEvent sound = EAT_SOUNDS[RANDOM.nextInt(EAT_SOUNDS.length)];
 
-                world.playSoundFromEntity(player, player, sound, SoundCategory.RECORDS, 1.0F, 1.0F);
+                world.playSoundFromEntity(player, player, sound, SoundCategory.RECORDS, 5.0F, 1.0F);
             }
             if (world.isClient) {
                 for (int i = 0; i < 10; i++) {

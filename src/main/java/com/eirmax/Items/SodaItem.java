@@ -52,7 +52,8 @@ public class SodaItem extends Item {
             );
         }
         player.setCurrentHand(hand);
-        return TypedActionResult.consume(stack);
+        player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
+        return TypedActionResult.success(stack, world.isClient);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class SodaItem extends Item {
                 player.getHungerManager().add(1, 0.1F);
                 SoundEvent sound = DRINK_SOUNDS[RANDOM.nextInt(DRINK_SOUNDS.length)];
                 System.out.println("Playing sound: " + sound);
-                world.playSoundFromEntity(player, player, sound, SoundCategory.RECORDS, 1.0F, 1.0F);
+                world.playSoundFromEntity(player, player, sound, SoundCategory.RECORDS, 5.0F, 1.0F);
             }
 
 
