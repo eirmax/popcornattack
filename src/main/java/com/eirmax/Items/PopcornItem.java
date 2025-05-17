@@ -50,7 +50,7 @@ public class PopcornItem extends Item {
         if (!world.isClient) {
             PopcornProjectile popcornProjectile = new PopcornProjectile(EntityType.ARROW, world);
             world.spawnEntity(popcornProjectile);
-            world.playSound(null, player.getX(), player.getY(), player.getZ(), THROW_SOUND, SoundCategory.AMBIENT, 5.0F, 1.0F);
+            world.playSoundFromEntity(player, player, THROW_SOUND, SoundCategory.AMBIENT, 5.0F, 1.0F);
         }
         player.setCurrentHand(hand);
         player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
