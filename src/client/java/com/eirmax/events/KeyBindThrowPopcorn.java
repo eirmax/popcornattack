@@ -17,7 +17,6 @@ public class KeyBindThrowPopcorn {
                     ItemStack stack = player.getMainHandStack();
                     if (stack.getItem() instanceof PopcornItem) {
                         PopcornItem popcornItem = (PopcornItem) stack.getItem();
-                        popcornItem.firePopcornStream(player.getWorld(), player);
                     }
                 }
             }

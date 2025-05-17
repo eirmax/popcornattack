@@ -67,7 +67,7 @@ public class SodaItem extends Item {
                 player.getHungerManager().add(1, 0.1F);
                 SoundEvent sound = DRINK_SOUNDS[RANDOM.nextInt(DRINK_SOUNDS.length)];
                 System.out.println("Playing sound: " + sound);
-                world.playSound(null, user.getX(), user.getY(), user.getZ(), sound, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                world.playSoundFromEntity(player, player, sound, SoundCategory.RECORDS, 1.0F, 1.0F);
             }
 
 
