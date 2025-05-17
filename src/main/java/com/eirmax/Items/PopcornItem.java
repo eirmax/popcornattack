@@ -25,8 +25,7 @@ public class PopcornItem extends Item {
             ModSounds.POPCORN_TWO,
             ModSounds.POPCORN_THREE,
             ModSounds.POPCORN_FOUR,
-            ModSounds.POPCORN_FIVE,
-            ModSounds.SODA_FIVE
+            ModSounds.POPCORN_FIVE
     };
 
     public PopcornItem(Settings settings) {
@@ -79,7 +78,7 @@ public class PopcornItem extends Item {
                 float volume = (float) (Math.max(0.0, 1.0 - (distance / radius)) * 0.15);
                 System.out.println("Volume: " + volume);
 
-                // Можно добавить минимальную громкость, если нужно: volume = Math.max(volume, 0.05f);
+
                 serverWorld.playSound(
                         null,
                         eaterPos.x, eaterPos.y, eaterPos.z,
