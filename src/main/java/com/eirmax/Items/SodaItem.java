@@ -42,14 +42,7 @@ public class SodaItem extends Item {
         }
         if (!world.isClient) {
             SoundEvent sound = DRINK_SOUNDS[RANDOM.nextInt(DRINK_SOUNDS.length)];
-            world.playSound(
-                    null,
-                    player.getX(), player.getY(), player.getZ(),
-                    sound,
-                    SoundCategory.AMBIENT,
-                    10.0F,
-                    1.0F
-            );
+            world.playSoundFromEntity(player, player, sound, SoundCategory.AMBIENT, 5.0F, 1.0F);
         }
         player.setCurrentHand(hand);
         player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
