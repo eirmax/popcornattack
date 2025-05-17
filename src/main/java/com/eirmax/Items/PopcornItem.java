@@ -12,17 +12,13 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.Random;
 
 public class PopcornItem extends Item {
-    private static final int COOLDOWN_TICKS = 20 * 1; // 1 second cooldown
+    private static final int COOLDOWN_TICKS = 20;
     private static final Random RANDOM = new Random();
     private static final SoundEvent[] EAT_SOUNDS = {
             ModSounds.POPCORN_ONE,
@@ -43,23 +39,21 @@ public class PopcornItem extends Item {
                         .build()));
     }
 
-//    @Override
-//    public UseAction getUseAction(ItemStack stack) {
-//        return UseAction.NONE;
-//    }
-
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         if (user instanceof PlayerEntity player) {
             if (player.getItemCooldownManager().isCoolingDown(this)) {
                 return stack;
             }
+            SoundEvent sound = EAT_SOUNDS[RANDOM.nextInt(EAT_SOUNDS.length)];
+            // --- На сервере: проиграть звук в мире (будет затухание по расстоянию) ---
             if (!world.isClient) {
                 player.getHungerManager().add(1, 0.1F);
-                SoundEvent sound = EAT_SOUNDS[RANDOM.nextInt(EAT_SOUNDS.length)];
-                playEatSoundForNearbyPlayers(world, player.getPos(), sound);
+                playEatSoundInWorld(world, player.getPos(), sound);
             }
+            // --- На клиенте: поедающий игрок слышит звук локально (гарантированно, независимо от сервера) ---
             if (world.isClient) {
+                player.playSound(sound, 1.0f, 1.0f);
                 for (int i = 0; i < 10; i++) {
                     double dx = user.getX() + (RANDOM.nextDouble() - 0.5) * 0.5;
                     double dy = user.getY() + user.getStandingEyeHeight() + (RANDOM.nextDouble() - 0.5) * 0.2;
@@ -73,31 +67,28 @@ public class PopcornItem extends Item {
         return stack;
     }
 
-    /**
-     * Воспроизводит звук для всех игроков в радиусе 15 блоков.
-     */
-    private void playEatSoundForNearbyPlayers(World world, Vec3d pos, SoundEvent sound) {
+    private void playEatSoundInWorld(World world, Vec3d eaterPos, SoundEvent sound) {
         if (!(world instanceof ServerWorld serverWorld)) return;
 
-        double radius = 15.0;
-        Box box = new Box(
-                pos.x - radius, pos.y - radius, pos.z - radius,
-                pos.x + radius, pos.y + radius, pos.z + radius
-        );
-
+        double radius = 16.0;
         for (ServerPlayerEntity player : serverWorld.getPlayers()) {
-            if (box.contains(player.getPos())) {
-                player.playSound(
+            double distance = player.getPos().distanceTo(eaterPos);
+            System.out.println("Pos: " + distance);
+            if (distance <= radius) {
+                // Линейное затухание: 1.0f рядом, 0.0f на границе радиуса
+                float volume = (float) (Math.max(0.0, 1.0 - (distance / radius)) * 0.15);
+                System.out.println("Volume: " + volume);
+
+                // Можно добавить минимальную громкость, если нужно: volume = Math.max(volume, 0.05f);
+                serverWorld.playSound(
+                        null,
+                        eaterPos.x, eaterPos.y, eaterPos.z,
                         sound,
-                        1.0f,
+                        SoundCategory.PLAYERS,
+                        volume, // например, 0.4f или 1.0f
                         1.0f
                 );
             }
         }
     }
-
-//    @Override
-//    public SoundEvent getEatSound() {
-//        return ModSounds.POPCORN_FIVE;
-//    }
 }
