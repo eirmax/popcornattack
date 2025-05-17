@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class PopcornItem extends Item {
-    private static final int COOLDOWN_TICKS = 20;
+    private static final int COOLDOWN_TICKS = 20 * 15;
     private static final Random RANDOM = new Random();
     private static final SoundEvent[] EAT_SOUNDS = {
             ModSounds.POPCORN_ONE,
