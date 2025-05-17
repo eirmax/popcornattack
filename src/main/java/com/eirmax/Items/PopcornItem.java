@@ -1,34 +1,36 @@
 package com.eirmax.Items;
 
-import com.eirmax.registry.PopcornProjectile;
 import com.eirmax.sounds.ModSounds;
 import net.minecraft.component.type.FoodComponent;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.Random;
 
 public class PopcornItem extends Item {
-    private static final int COOLDOWN_TICKS = 20 * 15; // 15 seconds cooldown
+    private static final int COOLDOWN_TICKS = 20 * 1; // 1 second cooldown
     private static final Random RANDOM = new Random();
-    private static final SoundEvent THROW_SOUND = SoundEvents.ENTITY_SNOWBALL_THROW;
     private static final SoundEvent[] EAT_SOUNDS = {
             ModSounds.POPCORN_ONE,
             ModSounds.POPCORN_TWO,
             ModSounds.POPCORN_THREE,
             ModSounds.POPCORN_FOUR,
-            ModSounds.POPCORN_FIVE
+            ModSounds.POPCORN_FIVE,
+            ModSounds.SODA_FIVE
     };
 
     public PopcornItem(Settings settings) {
@@ -41,37 +43,22 @@ public class PopcornItem extends Item {
                         .build()));
     }
 
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getStackInHand(hand);
-
-        if (player.getItemCooldownManager().isCoolingDown(this)) {
-            return TypedActionResult.fail(stack);
-        }
-        if (!world.isClient) {
-            PopcornProjectile popcornProjectile = new PopcornProjectile(EntityType.ARROW, world);
-            world.spawnEntity(popcornProjectile);
-            world.playSoundFromEntity(player, player, THROW_SOUND, SoundCategory.AMBIENT, 5.0F, 1.0F);
-        }
-        player.setCurrentHand(hand);
-        player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
-        return TypedActionResult.success(stack, world.isClient);
-    }
+//    @Override
+//    public UseAction getUseAction(ItemStack stack) {
+//        return UseAction.NONE;
+//    }
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        if (user instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) user;
+        if (user instanceof PlayerEntity player) {
             if (player.getItemCooldownManager().isCoolingDown(this)) {
                 return stack;
             }
             if (!world.isClient) {
                 player.getHungerManager().add(1, 0.1F);
                 SoundEvent sound = EAT_SOUNDS[RANDOM.nextInt(EAT_SOUNDS.length)];
-
-                world.playSoundFromEntity(player, player, sound, SoundCategory.AMBIENT, 5.0F, 1.0F);
+                playEatSoundForNearbyPlayers(world, player.getPos(), sound);
             }
-
             if (world.isClient) {
                 for (int i = 0; i < 10; i++) {
                     double dx = user.getX() + (RANDOM.nextDouble() - 0.5) * 0.5;
@@ -86,8 +73,31 @@ public class PopcornItem extends Item {
         return stack;
     }
 
-    @Override
-    public SoundEvent getEatSound() {
-        return EAT_SOUNDS[RANDOM.nextInt(EAT_SOUNDS.length)];
+    /**
+     * Воспроизводит звук для всех игроков в радиусе 15 блоков.
+     */
+    private void playEatSoundForNearbyPlayers(World world, Vec3d pos, SoundEvent sound) {
+        if (!(world instanceof ServerWorld serverWorld)) return;
+
+        double radius = 15.0;
+        Box box = new Box(
+                pos.x - radius, pos.y - radius, pos.z - radius,
+                pos.x + radius, pos.y + radius, pos.z + radius
+        );
+
+        for (ServerPlayerEntity player : serverWorld.getPlayers()) {
+            if (box.contains(player.getPos())) {
+                player.playSound(
+                        sound,
+                        1.0f,
+                        1.0f
+                );
+            }
+        }
     }
+
+//    @Override
+//    public SoundEvent getEatSound() {
+//        return ModSounds.POPCORN_FIVE;
+//    }
 }

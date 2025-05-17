@@ -14,10 +14,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class SodaItem extends Item {
-    private static final int COOLDOWN_TICKS = 20 * 15;
+    private static final int COOLDOWN_TICKS = 20 * 1;
     private static final Random RANDOM = new Random();
     private static final SoundEvent[] DRINK_SOUNDS = {
             ModSounds.SODA_ONE,
@@ -28,28 +29,33 @@ public class SodaItem extends Item {
     };
 
     public SodaItem(Settings settings) {
-        super(settings.maxCount(1).maxDamage(20).food(new FoodComponent.Builder().nutrition(1).saturationModifier(0.1F).alwaysEdible().build()));
+        super(settings
+                .maxCount(1)
+                .maxDamage(20)
+                .food(new FoodComponent
+                        .Builder()
+                        .nutrition(1)
+                        .saturationModifier(0.1F)
+                        .alwaysEdible()
+                        .build()));
     }
 
-    @Override
-    public SoundEvent getDrinkSound() {
-        return DRINK_SOUNDS[RANDOM.nextInt(DRINK_SOUNDS.length)];
-    }
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getStackInHand(hand);
-        if (player.getItemCooldownManager().isCoolingDown(this)) {
-            return TypedActionResult.fail(stack);
-        }
-        if (!world.isClient) {
-            SoundEvent sound = DRINK_SOUNDS[RANDOM.nextInt(DRINK_SOUNDS.length)];
-            world.playSoundFromEntity(player, player, sound, SoundCategory.AMBIENT, 5.0F, 1.0F);
-        }
-        player.setCurrentHand(hand);
-        player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
-        return TypedActionResult.success(stack, world.isClient);
-    }
 
+//    @Override
+//    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+//        ItemStack stack = player.getStackInHand(hand);
+//        if (player.getItemCooldownManager().isCoolingDown(this)) {
+//            return TypedActionResult.fail(stack);
+//        }
+//        if (!world.isClient) {
+//            SoundEvent sound = DRINK_SOUNDS[RANDOM.nextInt(DRINK_SOUNDS.length)];
+////            world.playSoundFromEntity(player, player, sound, SoundCategory.AMBIENT, 5.0F, 1.0F);
+//        }
+//        player.setCurrentHand(hand);
+//        player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
+//        return TypedActionResult.success(stack, world.isClient);
+//    }
+//
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         if (user instanceof PlayerEntity) {
@@ -79,5 +85,10 @@ public class SodaItem extends Item {
             stack.damage(1, player, EquipmentSlot.MAINHAND);
         }
         return stack;
+    }
+
+    @Override
+    public SoundEvent getEatSound() {
+        return ModSounds.SODA_FOUR;
     }
 }
