@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Hand;
@@ -58,6 +59,31 @@ public class PopcornItem extends Item {
         return TypedActionResult.success(stack, world.isClient);
     }
 
+//    @Override
+//    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+//        if (user instanceof PlayerEntity player) {
+//            if (player.getItemCooldownManager().isCoolingDown(this)) {
+//                return stack;
+//            }
+//            SoundEvent sound = EAT_SOUNDS[RANDOM.nextInt(EAT_SOUNDS.length)];
+//            if (!world.isClient) {
+//                player.getHungerManager().add(1, 0.1F);
+//                world.playSound(player, player.getX(), player.getY(), player.getZ(), sound, SoundCategory.PLAYERS, 0.6f, 1);
+//            } else {
+//                player.playSound(sound, 0.6f, 1.0f);
+//                for (int i = 0; i < 10; i++) {
+//                    double dx = user.getX() + (RANDOM.nextDouble() - 0.5) * 0.5;
+//                    double dy = user.getY() + user.getStandingEyeHeight() + (RANDOM.nextDouble() - 0.5) * 0.2;
+//                    double dz = user.getZ() + (RANDOM.nextDouble() - 0.5) * 0.5;
+//                    world.addParticle(ParticleTypes.POOF, dx, dy, dz, 0, 0.05, 0);
+//                }
+//            }
+//            player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
+//            stack.damage(1, player, EquipmentSlot.MAINHAND);
+//        }
+//        return stack;
+//    }
+
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         if (user instanceof PlayerEntity player) {
@@ -68,21 +94,23 @@ public class PopcornItem extends Item {
             if (!world.isClient) {
                 player.getHungerManager().add(1, 0.1F);
                 world.playSound(player, player.getX(), player.getY(), player.getZ(), sound, SoundCategory.PLAYERS, 0.6f, 1);
+
+                if (world instanceof ServerWorld serverWorld) {
+                    for (int i = 0; i < 10; i++) {
+                        double dx = user.getX() + (RANDOM.nextDouble() - 0.5) * 0.5;
+                        double dy = user.getY() + user.getStandingEyeHeight() + (RANDOM.nextDouble() - 0.5) * 0.2;
+                        double dz = user.getZ() + (RANDOM.nextDouble() - 0.5) * 0.5;
+                        serverWorld.spawnParticles(ParticleTypes.POOF, dx, dy, dz, 1, 0, 0.05, 0, 0);
+                    }
+                }
             } else {
                 player.playSound(sound, 0.6f, 1.0f);
-                for (int i = 0; i < 10; i++) {
-                    double dx = user.getX() + (RANDOM.nextDouble() - 0.5) * 0.5;
-                    double dy = user.getY() + user.getStandingEyeHeight() + (RANDOM.nextDouble() - 0.5) * 0.2;
-                    double dz = user.getZ() + (RANDOM.nextDouble() - 0.5) * 0.5;
-                    world.addParticle(ParticleTypes.POOF, dx, dy, dz, 0, 0.05, 0);
-                }
             }
             player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
             stack.damage(1, player, EquipmentSlot.MAINHAND);
         }
         return stack;
     }
-
 
     @Override
     public SoundEvent getEatSound() {

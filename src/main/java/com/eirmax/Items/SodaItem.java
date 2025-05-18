@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Hand;
@@ -63,15 +64,17 @@ public class SodaItem extends Item {
             if (!world.isClient) {
                 player.getHungerManager().add(1, 0.1F);
                 world.playSound(player, player.getX(), player.getY(), player.getZ(), sound, SoundCategory.PLAYERS, 0.6f, 1);
-            } else {
-                System.out.println("Client");
-                player.playSound(sound, 0.6f, 1.0f);
-                for (int i = 0; i < 10; i++) {
-                    double dx = user.getX() + (RANDOM.nextDouble() - 0.5) * 0.5;
-                    double dy = user.getY() + user.getStandingEyeHeight() + (RANDOM.nextDouble() - 0.5) * 0.2;
-                    double dz = user.getZ() + (RANDOM.nextDouble() - 0.5) * 0.5;
-                    world.addParticle(ParticleTypes.POOF, dx, dy, dz, 0, 0.05, 0);
+
+                if (world instanceof ServerWorld serverWorld) {
+                    for (int i = 0; i < 10; i++) {
+                        double dx = user.getX() + (RANDOM.nextDouble() - 0.5) * 0.5;
+                        double dy = user.getY() + user.getStandingEyeHeight() + (RANDOM.nextDouble() - 0.5) * 0.2;
+                        double dz = user.getZ() + (RANDOM.nextDouble() - 0.5) * 0.5;
+                        serverWorld.spawnParticles(ParticleTypes.DRIPPING_WATER, dx, dy, dz, 1, 0, 0.05, 0, 0);
+                    }
                 }
+            } else {
+                player.playSound(sound, 0.6f, 1.0f);
             }
             player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
             stack.damage(1, player, EquipmentSlot.MAINHAND);
