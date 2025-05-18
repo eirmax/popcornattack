@@ -16,6 +16,7 @@ public class PopcornAttack implements ModInitializer {
 	public void onInitialize() {
 		ModItems.registerModItems();
 		ModSounds.registerSounds();
+		Registry.register(Registry.ITEM, new Identifier("yourmodid", "popcorn_projectile"), new PopcornProjectileItem());
 
 	}
 }

@@ -3,6 +3,7 @@ package com.eirmax.Items;
 import com.eirmax.registry.PopcornProjectile;
 import com.eirmax.sounds.ModSounds;
 import net.minecraft.component.type.FoodComponent;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -15,6 +16,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -40,18 +42,26 @@ public class PopcornItem extends Item {
                         .alwaysEdible()
                         .build()));
     }
-
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return UseAction.NONE;
+    }
+    @Override
+    public SoundEvent getEatSound() {
+        return EAT_SOUNDS[RANDOM.nextInt(EAT_SOUNDS.length)];
+    }
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
-
         if (player.getItemCooldownManager().isCoolingDown(this)) {
             return TypedActionResult.fail(stack);
         }
         if (!world.isClient) {
             PopcornProjectile popcornProjectile = new PopcornProjectile(EntityType.ARROW, world);
+            popcornProjectile.setPosition(player.getX(), player.getY() + player.getEyeHeight(EntityPose.STANDING), player.getZ());
+            popcornProjectile.setVelocity(player.getRotationVector().multiply(2));
             world.spawnEntity(popcornProjectile);
-            world.playSoundFromEntity(player, player, THROW_SOUND, SoundCategory.AMBIENT, 5.0F, 1.0F);
+            world.playSoundFromEntity(player, player, THROW_SOUND, SoundCategory.PLAYERS, 5.0F, 1.0F);
         }
         player.setCurrentHand(hand);
         player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
@@ -67,9 +77,10 @@ public class PopcornItem extends Item {
             }
             if (!world.isClient) {
                 player.getHungerManager().add(1, 0.1F);
+
                 SoundEvent sound = EAT_SOUNDS[RANDOM.nextInt(EAT_SOUNDS.length)];
 
-                world.playSoundFromEntity(player, player, sound, SoundCategory.AMBIENT, 5.0F, 1.0F);
+                world.playSoundFromEntity(player, player, sound, SoundCategory.PLAYERS, 5.0F, 1.0F);
             }
 
             if (world.isClient) {
@@ -86,8 +97,4 @@ public class PopcornItem extends Item {
         return stack;
     }
 
-    @Override
-    public SoundEvent getEatSound() {
-        return EAT_SOUNDS[RANDOM.nextInt(EAT_SOUNDS.length)];
-    }
 }

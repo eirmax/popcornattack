@@ -10,11 +10,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 import java.util.Random;
+import java.util.Set;
 
 public class SodaItem extends Item {
     private static final int COOLDOWN_TICKS = 20 * 15;
@@ -32,10 +34,6 @@ public class SodaItem extends Item {
     }
 
     @Override
-    public SoundEvent getDrinkSound() {
-        return DRINK_SOUNDS[RANDOM.nextInt(DRINK_SOUNDS.length)];
-    }
-    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
         if (player.getItemCooldownManager().isCoolingDown(this)) {
@@ -43,7 +41,7 @@ public class SodaItem extends Item {
         }
         if (!world.isClient) {
             SoundEvent sound = DRINK_SOUNDS[RANDOM.nextInt(DRINK_SOUNDS.length)];
-            world.playSoundFromEntity(player, player, sound, SoundCategory.AMBIENT, 5.0F, 1.0F);
+            world.playSoundFromEntity(player, player, sound, SoundCategory.PLAYERS, 5.0F, 1.0F);
         }
         player.setCurrentHand(hand);
         player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
@@ -62,7 +60,7 @@ public class SodaItem extends Item {
                 player.getHungerManager().add(1, 0.1F);
                 SoundEvent sound = DRINK_SOUNDS[RANDOM.nextInt(DRINK_SOUNDS.length)];
                 System.out.println("Playing sound: " + sound);
-                world.playSoundFromEntity(player, player, sound, SoundCategory.AMBIENT, 5.0F, 1.0F);
+                world.playSoundFromEntity(player, player, sound, SoundCategory.PLAYERS, 5.0F, 1.0F);
             }
 
 

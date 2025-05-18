@@ -44,5 +44,6 @@ public class PopcornProjectile extends ProjectileEntity {
     @Override
     public void tick() {
         super.tick();
+        this.setVelocity(this.getVelocity().add(0, -0.05, 0));
     }
 }
