@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 
 import static com.eirmax.keybinds.KeyBinds.throwPopcornKey;
 
@@ -17,6 +18,7 @@ public class KeyBindThrowPopcorn {
                     ItemStack stack = player.getMainHandStack();
                     if (stack.getItem() instanceof PopcornItem) {
                         PopcornItem popcornItem = (PopcornItem) stack.getItem();
+                        stack.use(client.world, player, Hand.MAIN_HAND);
                     }
                 }
             }
