@@ -78,8 +78,9 @@ public class PopcornItem extends Item {
         }
         return stack;
     }
-//    @Override  НЕ МОГУ ОТКЛЮЧИТЬ ЗВУК, возмоно не правильно возвращаю null
-//    public SoundEvent getEatSound() {
-//        return null;
-//    }
+
+    @Override
+    public SoundEvent getEatSound() {
+        return ModSounds.SILENT;
+    }
 }

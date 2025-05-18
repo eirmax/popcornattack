@@ -64,5 +64,11 @@
     "sounds": [
       "popcornattack:popcorn_eat"
     ]
+  },
+  "silent": {
+    "subtitle": "sounds.popcornattack.silent",
+    "sounds": [
+      "popcornattack:silent"
+    ]
   }
 }
