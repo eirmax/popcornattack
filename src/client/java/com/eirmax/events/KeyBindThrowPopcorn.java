@@ -74,7 +74,7 @@ public class KeyBindThrowPopcorn {
             }
 
             for(int i2 = 0; i2 < 8; i2++) {
-                world.addParticle(ParticleTypes.CLOUD,
+                world.addParticle(ParticleTypes.END_ROD,
                         startPos.x,
                         startPos.y,
                         startPos.z,
