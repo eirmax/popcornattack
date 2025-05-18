@@ -8,7 +8,7 @@ public class KeyBinds {
     public static void registerKeyBinds() {
         throwPopcornKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.popcornattack.throw_popcorn",
-                GLFW.GLFW_KEY_X,
+                GLFW.GLFW_KEY_LEFT_ALT,
                 "category.popcornattack"
         ));
     }

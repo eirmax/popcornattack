@@ -17,6 +17,7 @@ public class ModSounds {
     public static final SoundEvent SODA_THREE = registerSoundEvent("soda_three");
     public static final SoundEvent SODA_FOUR = registerSoundEvent("soda_four");
     public static final SoundEvent SODA_FIVE = registerSoundEvent("soda_five");
+    public static final SoundEvent POPCORN_EAT = registerSoundEvent("popcorn_eat");
 
 
 

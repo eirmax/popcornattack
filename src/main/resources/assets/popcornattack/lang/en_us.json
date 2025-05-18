@@ -1,6 +1,6 @@
 {
-  "itemgroup.cinema_pack": "Cinema park",
-  "category.popcornattack": "CinemaPark",
+  "itemgroup.cinema_pack": "Popcorn",
+  "category.popcornattack": "Popcorn",
   "key.popcornattack.throw_popcorn": "Throw Popcorn",
   "item.popcornattack.popcorn": "Popcorn",
   "item.popcornattack.soda": "Soda"

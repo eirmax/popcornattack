@@ -58,5 +58,11 @@
     "sounds": [
       "popcornattack:popcorn_five"
     ]
+  },
+  "popcorn_eat": {
+    "subtitle": "sounds.popcornattack.popcorn_eat",
+    "sounds": [
+      "popcornattack:popcorn_eat"
+    ]
   }
 }
