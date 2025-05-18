@@ -10,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -38,6 +40,20 @@ public class SodaItem extends Item {
     }
 
     @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getStackInHand(hand);
+
+        if (player.getItemCooldownManager().isCoolingDown(this)) {
+            return TypedActionResult.fail(stack);
+        }
+
+        player.playSound(ModSounds.POPCORN_EAT, 0.8f, 1.0f);
+        player.setCurrentHand(hand);
+        player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
+        return TypedActionResult.success(stack, world.isClient);
+    }
+
+    @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         if (user instanceof PlayerEntity player) {
             if (player.getItemCooldownManager().isCoolingDown(this)) {
@@ -61,5 +77,9 @@ public class SodaItem extends Item {
             stack.damage(1, player, EquipmentSlot.MAINHAND);
         }
         return stack;
+    }
+    @Override
+    public SoundEvent getEatSound() {
+        return ModSounds.SILENT;
     }
 }
