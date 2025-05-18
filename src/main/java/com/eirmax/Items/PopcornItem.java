@@ -19,6 +19,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class PopcornItem extends Item {
@@ -78,7 +79,7 @@ public class PopcornItem extends Item {
             if (!world.isClient) {
                 player.getHungerManager().add(1, 0.1F);
 
-                SoundEvent sound = EAT_SOUNDS[RANDOM.nextInt(EAT_SOUNDS.length)];
+                SoundEvent sound = Arrays.stream(EAT_SOUNDS).toList().get(RANDOM.nextInt());
 
                 world.playSoundFromEntity(player, player, sound, SoundCategory.PLAYERS, 5.0F, 1.0F);
             }
