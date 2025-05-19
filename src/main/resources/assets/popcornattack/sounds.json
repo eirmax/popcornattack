@@ -70,5 +70,11 @@
     "sounds": [
       "popcornattack:silent"
     ]
+  },
+  "soda_eat": {
+    "subtitle": "sounds.popcornattack.soda_eat",
+    "sounds": [
+      "popcornattack:soda_eat"
+    ]
   }
 }

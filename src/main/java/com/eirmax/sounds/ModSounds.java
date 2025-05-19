@@ -19,7 +19,7 @@ public class ModSounds {
     public static final SoundEvent SODA_FIVE = registerSoundEvent("soda_five");
     public static final SoundEvent POPCORN_EAT = registerSoundEvent("popcorn_eat");
     public static final SoundEvent SILENT = registerSoundEvent("silent");
-
+    public static final SoundEvent SODA_EAT = registerSoundEvent("soda_eat");
 
     private static SoundEvent registerSoundEvent(String name) {
         return Registry.register(Registries.SOUND_EVENT, Identifier.of(PopcornAttack.MOD_ID, name),

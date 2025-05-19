@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class SodaItem extends Item {
-    private static final int COOLDOWN_TICKS = PopcornConfig.INSTANCE.cooldownTicks;
+    //private static final int COOLDOWN_TICKS = PopcornConfig.INSTANCE.cooldownTicks;
     private static final Random RANDOM = new Random();
     private static final SoundEvent[] DRINK_SOUNDS = {
             ModSounds.SODA_ONE,
@@ -43,13 +43,14 @@ public class SodaItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        int COOLDOWN_TICKS = PopcornConfig.INSTANCE.cooldownTicks;
         ItemStack stack = player.getStackInHand(hand);
 
         if (player.getItemCooldownManager().isCoolingDown(this)) {
             return TypedActionResult.fail(stack);
         }
 
-        player.playSound(ModSounds.POPCORN_EAT, 0.8f, 1.0f);
+        player.playSound(ModSounds.SODA_EAT, 0.8f, 1.0f);// ТУТ --------------------------------------------------- заменить звук
         player.setCurrentHand(hand);
         player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
         return TypedActionResult.success(stack, world.isClient);
@@ -57,6 +58,7 @@ public class SodaItem extends Item {
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+        int COOLDOWN_TICKS = PopcornConfig.INSTANCE.cooldownTicks;
         if (user instanceof PlayerEntity player) {
             if (player.getItemCooldownManager().isCoolingDown(this)) {
                 return stack;

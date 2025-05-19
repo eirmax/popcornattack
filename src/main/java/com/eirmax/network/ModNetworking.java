@@ -1,9 +1,6 @@
 package com.eirmax.network;
 
-import com.eirmax.Items.PopcornItem;
-import com.eirmax.PopcornAttack;
 import com.eirmax.PopcornConfig;
-import com.eirmax.sounds.ModSounds;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.EquipmentSlot;
@@ -11,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 
@@ -36,16 +34,19 @@ public class ModNetworking {
                             System.out.println("Cooldown: " + COOLDOWN_TICKS);
                             stack.damage(1, player, EquipmentSlot.MAINHAND);
 
-                            player.getWorld().playSound(player, player.getX(), player.getY(), player.getZ(), ModSounds.POPCORN_EAT, SoundCategory.PLAYERS, 0.6f, 1);
-                            player.playSound(ModSounds.POPCORN_EAT, 0.8f, 1.0f); // разобраться со звуком для бросающего что-то со стороны сервера попробовать поднять сервер
-
+//                            player.getWorld().playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.PLAYERS, 0.6f, 1);
+//                            player.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 0.8f, 1.0f); // разобраться со звуком для бросающего что-то со стороны сервера попробовать поднять сервер
+                            player.getWorld().playSound(
+                                    null, // <-- чтобы услышали все, включая самого игрока!
+                                    player.getX(), player.getY(), player.getZ(),
+                                    SoundEvents.ENTITY_SNOWBALL_THROW,
+                                    SoundCategory.PLAYERS,
+                                    0.8f, // громкость
+                                    1.0f  // тон
+                            );
+                            System.out.println("Player: " + player.getName());
                             PopcornProjectilesManager.add(new PopcornProjectile(serverWorld, player, startPos, look));
-
                         }
-
-//                        PopcornItem.AfterUse(player.getWorld(), player);
-                        // Все параметры берутся из PopcornConfig, ничего не надо менять здесь!
-
                     }
                 }
         );

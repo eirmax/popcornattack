@@ -24,7 +24,7 @@ import java.util.Random;
 import java.util.List;
 
 public class PopcornItem extends Item {
-    private static final int COOLDOWN_TICKS = PopcornConfig.INSTANCE.cooldownTicks;
+    //private static final int COOLDOWN_TICKS = PopcornConfig.INSTANCE.cooldownTicks;
     private static final Random RANDOM = new Random();
     private static final SoundEvent[] EAT_SOUNDS = {
             ModSounds.POPCORN_ONE,
@@ -48,6 +48,7 @@ public class PopcornItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        int COOLDOWN_TICKS = PopcornConfig.INSTANCE.cooldownTicks;
         ItemStack stack = player.getStackInHand(hand);
 
         if (player.getItemCooldownManager().isCoolingDown(this)) {
@@ -63,6 +64,7 @@ public class PopcornItem extends Item {
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+        int COOLDOWN_TICKS = PopcornConfig.INSTANCE.cooldownTicks;
         if (user instanceof PlayerEntity player) {
             if (player.getItemCooldownManager().isCoolingDown(this)) {
                 return stack;
@@ -89,12 +91,6 @@ public class PopcornItem extends Item {
         }
         return stack;
     }
-
-//    public static void AfterUse(World world, LivingEntity user) {
-//
-//
-//
-//    }
 
     @Override
     public SoundEvent getEatSound() {
