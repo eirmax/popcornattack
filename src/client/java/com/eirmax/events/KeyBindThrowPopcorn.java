@@ -1,7 +1,9 @@
 package com.eirmax.events;
 
 import com.eirmax.Items.PopcornItem;
+import com.eirmax.network.PopcornKeyPressedPayload;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -19,6 +21,7 @@ public class KeyBindThrowPopcorn {
                     if (stack.getItem() instanceof PopcornItem) {
                         PopcornItem popcornItem = (PopcornItem) stack.getItem();
                         stack.use(client.world, player, Hand.MAIN_HAND);
+                        ClientPlayNetworking.send(new PopcornKeyPressedPayload());
                     }
                 }
             }
