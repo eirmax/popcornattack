@@ -1,5 +1,6 @@
 package com.eirmax.Items;
 
+import com.eirmax.PopcornConfig;
 import com.eirmax.sounds.ModSounds;
 import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.EquipmentSlot;
@@ -18,7 +19,7 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class SodaItem extends Item {
-    private static final int COOLDOWN_TICKS = 20 * 1;
+    private static final int COOLDOWN_TICKS = PopcornConfig.INSTANCE.cooldownTicks;
     private static final Random RANDOM = new Random();
     private static final SoundEvent[] DRINK_SOUNDS = {
             ModSounds.SODA_ONE,

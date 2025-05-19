@@ -19,8 +19,7 @@ public class KeyBindThrowPopcorn {
                 if (player != null) {
                     ItemStack stack = player.getMainHandStack();
                     if (stack.getItem() instanceof PopcornItem) {
-                        PopcornItem popcornItem = (PopcornItem) stack.getItem();
-                        stack.use(client.world, player, Hand.MAIN_HAND);
+//                        stack.use(client.world, player, Hand.MAIN_HAND);
                         ClientPlayNetworking.send(new PopcornKeyPressedPayload());
                     }
                 }
