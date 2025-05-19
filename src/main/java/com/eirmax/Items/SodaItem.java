@@ -43,16 +43,16 @@ public class SodaItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        int COOLDOWN_TICKS = PopcornConfig.INSTANCE.cooldownTicks;
+//        int COOLDOWN_TICKS = PopcornConfig.INSTANCE.cooldownTicks;
         ItemStack stack = player.getStackInHand(hand);
 
-        if (player.getItemCooldownManager().isCoolingDown(this)) {
-            return TypedActionResult.fail(stack);
-        }
+//        if (player.getItemCooldownManager().isCoolingDown(this)) {
+//            return TypedActionResult.fail(stack);
+//        }
 
         player.playSound(ModSounds.SODA_EAT, 0.8f, 1.0f);// ТУТ --------------------------------------------------- заменить звук
         player.setCurrentHand(hand);
-        player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
+//        player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
         return TypedActionResult.success(stack, world.isClient);
     }
 
@@ -66,7 +66,7 @@ public class SodaItem extends Item {
             SoundEvent sound = DRINK_SOUNDS[RANDOM.nextInt(DRINK_SOUNDS.length)];
             if (!world.isClient) {
                 player.getHungerManager().add(1, 0.1F);
-                world.playSound(player, player.getX(), player.getY(), player.getZ(), sound, SoundCategory.PLAYERS, 0.6f, 1);
+                world.playSound(null, player.getX(), player.getY(), player.getZ(), sound, SoundCategory.PLAYERS, 0.6f, 1);
 
                 if (world instanceof ServerWorld serverWorld) {
                     for (int i = 0; i < 10; i++) {

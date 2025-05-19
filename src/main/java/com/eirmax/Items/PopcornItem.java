@@ -48,17 +48,16 @@ public class PopcornItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        int COOLDOWN_TICKS = PopcornConfig.INSTANCE.cooldownTicks;
+//        int COOLDOWN_TICKS = PopcornConfig.INSTANCE.cooldownTicks;
         ItemStack stack = player.getStackInHand(hand);
 
-        if (player.getItemCooldownManager().isCoolingDown(this)) {
-            return TypedActionResult.fail(stack);
-        }
-
+//        if (player.getItemCooldownManager().isCoolingDown(this)) {
+//            return TypedActionResult.fail(stack);
+//        }
         player.playSound(ModSounds.POPCORN_EAT, 0.8f, 1.0f);
         player.setCurrentHand(hand);
-        player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
-        System.out.println("Cooldown: " + COOLDOWN_TICKS);
+        //player.getItemCooldownManager().set(this, COOLDOWN_TICKS);
+//        System.out.println("Cooldown: " + COOLDOWN_TICKS);
         return TypedActionResult.success(stack, world.isClient);
     }
 
@@ -67,12 +66,12 @@ public class PopcornItem extends Item {
         int COOLDOWN_TICKS = PopcornConfig.INSTANCE.cooldownTicks;
         if (user instanceof PlayerEntity player) {
             if (player.getItemCooldownManager().isCoolingDown(this)) {
-                return stack;
+                return stack;//-------------------------------------------------------------
             }
             SoundEvent sound = EAT_SOUNDS[RANDOM.nextInt(EAT_SOUNDS.length)];
             if (!world.isClient) {
                 player.getHungerManager().add(1, 0.1F);
-                world.playSound(player, player.getX(), player.getY(), player.getZ(), sound, SoundCategory.PLAYERS, 0.6f, 1);
+                world.playSound(null, player.getX(), player.getY(), player.getZ(), sound, SoundCategory.PLAYERS, 0.6f, 1);
 
                 if (world instanceof ServerWorld serverWorld) {
                     for (int i = 0; i < 10; i++) {
