@@ -3,6 +3,7 @@ package com.eirmax;
 import com.eirmax.Items.ModItems;
 import com.eirmax.sounds.ModSounds;
 import com.eirmax.network.ModNetworking;
+import com.eirmax.network.PopcornProjectilesManager;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,5 +18,6 @@ public class PopcornAttack implements ModInitializer {
 		ModSounds.registerSounds();
 		ModNetworking.registerPayloads();      // Сначала регистрируем payload-ы!
 		ModNetworking.registerServerReceivers();
+		PopcornProjectilesManager.registerTickHandler(); // Запуск tick-обработчика для снарядов
 	}
 }
